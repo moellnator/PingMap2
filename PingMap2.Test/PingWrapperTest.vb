@@ -4,7 +4,7 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
 <TestClass()> Public Class PingWrapperTest
 
-    Private _ping_results As PingResult
+    Private _ping_results As Ping.Result
     Private _ping_event_count As Integer = 0
     Private ReadOnly _lock As New Threading.AutoResetEvent(False)
 
@@ -20,7 +20,7 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
     End Sub
 
     Private Sub ExecutePing(address As IPAddress, ttl As Integer)
-        Dim ping As New PingWrapper(address, ttl)
+        Dim ping As New Ping.Wrapper(address, ttl)
         AddHandler ping.PingEvent, AddressOf Me._send_ping_callback
         ping.Timeout = 1000
         ping.StartPing()
@@ -28,7 +28,7 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
         RemoveHandler ping.PingEvent, AddressOf Me._send_ping_callback
     End Sub
 
-    Private Sub _send_ping_callback(sender As Object, e As PingEventArgs)
+    Private Sub _send_ping_callback(sender As Object, e As Ping.PingEventArgs)
         Me._ping_results = e.Results
         Me._ping_event_count += 1
         Me._lock.Set()

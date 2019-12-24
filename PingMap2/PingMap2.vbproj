@@ -74,13 +74,13 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GeoLight.vb" />
-    <Compile Include="GeoResult.vb" />
-    <Compile Include="PingEvent.vb" />
-    <Compile Include="PingQueue.vb" />
-    <Compile Include="PingResult.vb" />
-    <Compile Include="PingWrapper.vb" />
-    <Compile Include="PingPool.vb" />
+    <Compile Include="Tracking\GeoLight.vb" />
+    <Compile Include="Tracking\GeoResult.vb" />
+    <Compile Include="Ping\PingEvent.vb" />
+    <Compile Include="Ping\Queue.vb" />
+    <Compile Include="Ping\Result.vb" />
+    <Compile Include="Ping\Wrapper.vb" />
+    <Compile Include="Ping\Pool.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -96,6 +96,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Tracking\RDNS.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
