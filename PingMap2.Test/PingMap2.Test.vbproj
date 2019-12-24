@@ -78,6 +78,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GeoLigthTest.vb" />
     <Compile Include="PingPoolTest.vb" />
     <Compile Include="PingWrapperTest.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
