@@ -2,19 +2,19 @@
 Imports MaxMind.GeoIP2
 Imports MaxMind.GeoIP2.Responses
 
-Namespace Tracking
-    Public Class GeoLight
+Namespace Geo
+    Public Class GeoLightDB
 
         'Database and Contents Copyright (c) 2019 MaxMind, Inc.
 
         'This product includes GeoLite2 data created by MaxMind, available from
         ' <a href = "https://www.maxmind.com" > https : //www.maxmind.com</a>.
 
-        Private Shared _Current_Instance As GeoLight
+        Private Shared _Current_Instance As GeoLightDB
 
-        Public Shared ReadOnly Property Current As GeoLight
+        Public Shared ReadOnly Property Current As GeoLightDB
             Get
-                If _Current_Instance Is Nothing Then _Current_Instance = New GeoLight
+                If _Current_Instance Is Nothing Then _Current_Instance = New GeoLightDB
                 Return _Current_Instance
             End Get
         End Property
@@ -31,8 +31,8 @@ Namespace Tracking
             Me._geo_db_reader.Dispose()
         End Sub
 
-        Public Function Resolve(address As IPAddress) As GeoResult
-            Return GeoResult.FromMaxMind(Me._geo_db_reader.City(address))
+        Public Function Resolve(address As IPAddress) As GeoLightEntry
+            Return GeoLightEntry.FromMaxMind(Me._geo_db_reader.City(address))
         End Function
 
     End Class

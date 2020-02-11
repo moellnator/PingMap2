@@ -1,7 +1,7 @@
 ﻿Imports MaxMind.GeoIP2.Responses
 
-Namespace Tracking
-    Public Class GeoResult
+Namespace Geo
+    Public Class GeoLightEntry
 
         Public ReadOnly Property Confidence As Double
         Public ReadOnly Property ContinentName As String
@@ -21,8 +21,8 @@ Namespace Tracking
             Me.Latitude = latitude
         End Sub
 
-        Public Shared Function FromMaxMind(city As CityResponse) As GeoResult
-            Return New GeoResult(
+        Public Shared Function FromMaxMind(city As CityResponse) As GeoLightEntry
+            Return New GeoLightEntry(
                 city.Continent.Name,
                 city.Country.Name,
                 New String(city.City.Name),

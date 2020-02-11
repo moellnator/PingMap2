@@ -74,13 +74,9 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tracking\GeoLight.vb" />
-    <Compile Include="Tracking\GeoResult.vb" />
-    <Compile Include="Ping\PingEvent.vb" />
-    <Compile Include="Ping\Queue.vb" />
-    <Compile Include="Ping\Result.vb" />
-    <Compile Include="Ping\Wrapper.vb" />
-    <Compile Include="Ping\Pool.vb" />
+    <Compile Include="Engine\Report.vb" />
+    <Compile Include="Geo\GeoLightDB.vb" />
+    <Compile Include="Geo\GeoLightEntry.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -96,7 +92,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Tracking\RDNS.vb" />
+    <Compile Include="Network\IPRange.vb" />
+    <Compile Include="Network\Ping.vb" />
+    <Compile Include="Network\Source.vb" />
+    <Compile Include="Network\TraceRoute.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -117,8 +116,8 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <None Include="Resources\GeoIP2-City.mmdb" />
-    <None Include="Resources\GeoLite2-City.mmdb" />
+    <None Include="Geo\Resources\GeoIP2-City.mmdb" />
+    <None Include="Geo\Resources\GeoLite2-City.mmdb" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
