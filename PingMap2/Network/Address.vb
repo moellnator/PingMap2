@@ -22,19 +22,14 @@ Namespace Network
             IPRange.Parse("255.255.255.255/32")
         }
 
-        Private Shared _Source As IPAddress
         Private Shared ReadOnly _RNG As New Random
 
         Public Shared ReadOnly Property Source As IPAddress
             Get
-                Static _obj As New Object
-                SyncLock _obj
-                    If _Source Is Nothing Then
-                        Dim addr As String = New WebClient().DownloadString("http://icanhazip.com").Trim(vbCr, vbLf, vbTab, " ")
-                        _Source = IPAddress.Parse(addr)
-                    End If
-                End SyncLock
-                Return _Source
+                Dim retval As IPAddress
+                Dim addr As String = New WebClient().DownloadString("http://icanhazip.com").Trim(vbCr, vbLf, vbTab, " ")
+                retval = IPAddress.Parse(addr)
+                Return retval
             End Get
         End Property
 

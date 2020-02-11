@@ -74,7 +74,11 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\Pool.vb" />
     <Compile Include="Engine\Report.vb" />
+    <Compile Include="Engine\ReportCallback.vb" />
+    <Compile Include="Engine\Session.vb" />
+    <Compile Include="Engine\Worker.vb" />
     <Compile Include="Geo\GeoLightDB.vb" />
     <Compile Include="Geo\GeoLightEntry.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -94,7 +98,7 @@
     </Compile>
     <Compile Include="Network\IPRange.vb" />
     <Compile Include="Network\Ping.vb" />
-    <Compile Include="Network\Source.vb" />
+    <Compile Include="Network\Address.vb" />
     <Compile Include="Network\TraceRoute.vb" />
   </ItemGroup>
   <ItemGroup>
