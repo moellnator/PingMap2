@@ -74,9 +74,11 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\IReportSink.vb" />
     <Compile Include="Engine\Pool.vb" />
     <Compile Include="Engine\Report.vb" />
     <Compile Include="Engine\ReportCallback.vb" />
+    <Compile Include="Engine\Runtime.vb" />
     <Compile Include="Engine\Session.vb" />
     <Compile Include="Engine\Worker.vb" />
     <Compile Include="Geo\GeoLightDB.vb" />

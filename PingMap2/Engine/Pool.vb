@@ -8,14 +8,15 @@ Namespace Engine
 
         Public Property MaxWorkerCount As Integer = 16
 
-        Private ReadOnly _available_pings As New Stack(Of Worker)
+        Private ReadOnly _available_workers As New Stack(Of Worker)
         Private ReadOnly _lock As New Threading.AutoResetEvent(False)
-        Private ReadOnly _active_pings As New List(Of Worker)
+        Private ReadOnly _active_workers As New List(Of Worker)
         Private ReadOnly _update_lock As New Object
         Private _token_source As Threading.CancellationTokenSource
         Private _current_pool_thread As Threading.Thread
         Private _is_running As Boolean = False
         Private _is_disposed As Boolean = False
+
         Public Property IsRunning As Boolean
             Get
                 Return Me._is_running
@@ -33,7 +34,7 @@ Namespace Engine
 
         Public ReadOnly Property IsDone As Boolean
             Get
-                Return Me._active_pings.Count = 0 And Me._available_pings.Count = 0
+                Return Me._active_workers.Count = 0 And Me._available_workers.Count = 0
             End Get
         End Property
 
@@ -56,16 +57,10 @@ Namespace Engine
             Me._current_pool_thread = Nothing
         End Sub
 
-        Public Sub EnqueueRequest(address As IPAddress, ttl As Integer, timeout As Integer)
+        Public Sub EnqueueRequests(workers As IEnumerable(Of Worker))
             SyncLock Me._update_lock
-                Me._available_pings.Push(New Worker(address, ttl, timeout))
-            End SyncLock
-        End Sub
-
-        Public Sub EnqueueRequests(pings As IEnumerable(Of Worker))
-            SyncLock Me._update_lock
-                For Each p As Worker In pings
-                    Me._available_pings.Push(p)
+                For Each p As Worker In workers
+                    Me._available_workers.Push(p)
                 Next
             End SyncLock
         End Sub
@@ -87,11 +82,11 @@ Namespace Engine
 
         Private Sub _update_pool()
             SyncLock Me._update_lock
-                If Me._available_pings.Count = 0 Then
+                If Me._available_workers.Count = 0 Then
                     RaiseEvent ReportQueueEmptyEvent(Me, EventArgs.Empty)
                 Else
-                    If Me._active_pings.Count < Me.MaxWorkerCount Then
-                        Dim new_ping As Worker = Me._available_pings.Pop
+                    If Me._active_workers.Count < Me.MaxWorkerCount Then
+                        Dim new_ping As Worker = Me._available_workers.Pop
                         AddHandler new_ping.ReportEvent, AddressOf Me._worker_call_back
                         new_ping.StartReport()
                     End If
@@ -102,7 +97,7 @@ Namespace Engine
         Private Sub _worker_call_back(sender As Object, e As ReportEventArgs)
             Dim worker As Worker = sender
             SyncLock Me._update_lock
-                Me._active_pings.Remove(sender)
+                Me._active_workers.Remove(sender)
                 RemoveHandler worker.ReportEvent, AddressOf Me._worker_call_back
                 worker.Dispose()
             End SyncLock
@@ -111,11 +106,11 @@ Namespace Engine
 
         Private Sub _abort_pool()
             SyncLock Me._update_lock
-                For Each p As Worker In Me._active_pings
+                For Each p As Worker In Me._active_workers
                     p.Abort()
                     p.Dispose()
                 Next
-                Me._active_pings.Clear()
+                Me._active_workers.Clear()
             End SyncLock
         End Sub
 

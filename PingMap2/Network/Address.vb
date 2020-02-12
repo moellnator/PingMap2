@@ -26,9 +26,12 @@ Namespace Network
 
         Public Shared ReadOnly Property Source As IPAddress
             Get
-                Dim retval As IPAddress
-                Dim addr As String = New WebClient().DownloadString("http://icanhazip.com").Trim(vbCr, vbLf, vbTab, " ")
-                retval = IPAddress.Parse(addr)
+                Dim retval As IPAddress = Nothing
+                Try
+                    Dim addr As String = New WebClient().DownloadString("http://icanhazip.com").Trim(vbCr, vbLf, vbTab, " ")
+                    retval = IPAddress.Parse(addr)
+                Catch ex As WebException
+                End Try
                 Return retval
             End Get
         End Property

@@ -10,6 +10,7 @@ Namespace Engine
         Private ReadOnly _target As IPAddress
         Private ReadOnly _time_out As Integer
         Private ReadOnly _max_ttl As Integer
+        Private ReadOnly _session As Session
 
         Private _is_running As Boolean = False
         Public ReadOnly Property IsRunning As Boolean
@@ -18,7 +19,8 @@ Namespace Engine
             End Get
         End Property
 
-        Public Sub New(target As IPAddress, ttl As Integer, timeout As Integer)
+        Public Sub New(session As Session, target As IPAddress, ttl As Integer, timeout As Integer)
+            Me._session = session
             Me._target = target
             Me._max_ttl = ttl
             Me._time_out = timeout
@@ -36,7 +38,7 @@ Namespace Engine
             Dim report As Report = Nothing
             Try
                 Me._is_running = True
-                report = Report.FromRequest(Me._target, Me._max_ttl, Me._time_out)
+                If Me._session.IsValid Then report = Report.FromRequest(Me._session, Me._target, Me._max_ttl, Me._time_out)
             Catch tha_ex As Threading.ThreadAbortException
             Finally
                 Me._is_running = False

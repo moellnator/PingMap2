@@ -25,21 +25,26 @@ Namespace Network
         End Sub
 
         Public Shared Function FromRequest(target As IPAddress, ttl As Integer, timeout As Integer) As Ping
-            Dim ping As New NetworkInformation.Ping
             Dim timestamp As Date = Now
-            Dim reply As PingReply = ping.Send(
-                target,
-                timeout,
-                target.GetAddressBytes,
-                New PingOptions(ttl, True)
-            )
-            Return New Ping(
-                timestamp,
-                target,
-                reply.Address,
-                reply.RoundtripTime,
-                reply.Status
-            )
+            Dim retval As New Ping(timestamp, target, Nothing, 0, IPStatus.Unknown)
+            Try
+                Dim ping As New NetworkInformation.Ping
+                Dim reply As PingReply = Ping.Send(
+                    target,
+                    timeout,
+                    target.GetAddressBytes,
+                    New PingOptions(ttl, True)
+                )
+                retval = New Ping(
+                    timestamp,
+                    target,
+                    reply.Address,
+                    reply.RoundtripTime,
+                    reply.Status
+                )
+            Catch ex As PingException
+            End Try
+            Return retval
         End Function
 
     End Class

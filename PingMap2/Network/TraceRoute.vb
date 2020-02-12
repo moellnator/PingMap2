@@ -26,7 +26,7 @@ Namespace Network
             For i = 1 To maxTTL
                 Dim reply As Ping = Ping.FromRequest(target, i, timeout)
                 retval.Add(reply)
-                If reply.Replier.Equals(target) Then Exit For
+                If reply.Replier IsNot Nothing AndAlso reply.Replier.Equals(target) Then Exit For
             Next
             Return New TraceRoute(retval.Select(Function(h) h.Replier))
         End Function
