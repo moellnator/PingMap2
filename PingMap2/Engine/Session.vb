@@ -81,6 +81,17 @@ Namespace Engine
             Dispose(True)
         End Sub
 
+        Public Sub ToBinStream(w As IO.BinaryWriter)
+            w.Write(Me.ClientName)
+            w.Write(Me.Source.GetAddressBytes, 0, 4)
+            w.Write(Me.Start.ToBinary)
+        End Sub
+
+        Public Shared Function FromBinStream(r As IO.BinaryReader) As Session
+            Return New Session(r.ReadString, New IPAddress(r.ReadBytes(4)), Date.FromBinary(r.ReadInt64))
+        End Function
+
+
     End Class
 
 End Namespace

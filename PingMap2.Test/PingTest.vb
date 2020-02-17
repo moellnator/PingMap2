@@ -37,19 +37,13 @@ Imports PingMap2.Engine
         Debug.Print(sink.First.Ping.Replier.ToString)
     End Sub
 
-    Private Class DummySink : Implements IReportSink, IReadOnlyList(Of Report)
+    Private Class DummySink : Implements IReportSink, IReadOnlyCollection(Of Report)
 
         Private ReadOnly _reports As New List(Of Report)
 
         Public Sub Register(report As Report) Implements IReportSink.Register
             Me._reports.Add(report)
         End Sub
-
-        Default Public ReadOnly Property Item(index As Integer) As Report Implements IReadOnlyList(Of Report).Item
-            Get
-                Return Me._reports.Item(index)
-            End Get
-        End Property
 
         Public ReadOnly Property Count As Integer Implements IReadOnlyCollection(Of Report).Count
             Get

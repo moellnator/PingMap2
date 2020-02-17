@@ -39,6 +39,18 @@ Namespace Network
             Return Me.GetEnumerator
         End Function
 
+        Public Sub ToBinStream(w As IO.BinaryWriter)
+            w.Write(Me._hops.Count)
+            For Each h As IPAddress In Me._hops
+                w.Write(h.GetAddressBytes, 0, 4)
+            Next
+        End Sub
+
+        Public Shared Function FromBinStream(r As IO.BinaryReader) As TraceRoute
+            Dim count As Integer = r.ReadInt32
+            Return New TraceRoute(Enumerable.Range(0, count).Select(Function(i) New IPAddress(r.ReadBytes(4))))
+        End Function
+
     End Class
 
 End Namespace

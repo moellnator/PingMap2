@@ -9,13 +9,16 @@
         Private ReadOnly _thread_count As Integer
         Private ReadOnly _sinks As New List(Of IReportSink)
 
+        Public Property MaxTTL As Integer = 255
+        Public Property Timeout As Integer = 1000
+
         Public Sub New(clientName As String, threads As Integer)
             Me._session = Session.CreateNew(clientName)
             Me._pool = New Pool With {.MaxWorkerCount = threads}
             AddHandler Me._pool.ReportQueueEmptyEvent, AddressOf Me._pool_empty
             AddHandler Me._pool.ReportEvent, AddressOf Me._pool_report
             Me._thread_count = threads
-            Me._pool.EnqueueRequests(_CreateRandomWorkers(Me._session, Me._thread_count))
+            Me._pool.EnqueueRequests(_CreateRandomWorkers())
         End Sub
 
         Public Sub AddReportSink(sink As IReportSink)
@@ -28,7 +31,7 @@
 
         Private Sub _pool_empty(sender As Object, e As EventArgs)
             SyncLock Me._session
-                Me._pool.EnqueueRequests(_CreateRandomWorkers(Me._session, Me._thread_count))
+                Me._pool.EnqueueRequests(_CreateRandomWorkers())
             End SyncLock
         End Sub
 
@@ -40,8 +43,15 @@
             End If
         End Sub
 
-        Private Shared Function _CreateRandomWorkers(session As Session, count As Integer) As Worker()
-            Return Enumerable.Range(0, count).Select(Function(i) New Worker(session, Network.Address.Random, 255, 1000)).ToArray
+        Private Function _CreateRandomWorkers() As Worker()
+            Return Enumerable.Range(0, Me._thread_count).Select(
+                Function(i) New Worker(
+                    Me._session,
+                    Network.Address.Random,
+                    Me.MaxTTL,
+                    Me.Timeout
+                )
+            ).ToArray
         End Function
 
         Protected Overridable Sub Dispose(disposing As Boolean)

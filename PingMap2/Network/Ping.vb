@@ -47,6 +47,26 @@ Namespace Network
             Return retval
         End Function
 
+        Public Sub ToBinStream(w As IO.BinaryWriter)
+            With w
+                .Write(Me.Timestamp.ToBinary)
+                .Write(Me.Target.GetAddressBytes, 0, 4)
+                .Write(If(Me.Replier.GetAddressBytes, {0, 0, 0, 0}), 0, 4)
+                .Write(Me.RTT)
+                .Write(Me.State)
+            End With
+        End Sub
+
+        Public Shared Function FromBinStream(r As IO.BinaryReader) As Ping
+            Return New Ping(
+                Date.FromBinary(r.ReadInt64),
+                New IPAddress(r.ReadBytes(4)),
+                (Function(b As IPAddress) If(b.Equals(New IPAddress({0, 0, 0, 0})), Nothing, b))(New IPAddress(r.ReadBytes(4))),
+                r.ReadInt32,
+                r.ReadInt32
+            )
+        End Function
+
     End Class
 
 End Namespace

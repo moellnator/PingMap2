@@ -9,7 +9,7 @@ Namespace Engine
         Public ReadOnly Property Route As Network.TraceRoute
         Public ReadOnly Property Location As Geo.GeoLightEntry
 
-        Public Sub New(session As Session, target As IPAddress, ping As Network.Ping, route As Network.TraceRoute, location As Geo.GeoLightEntry)
+        Private Sub New(session As Session, target As IPAddress, ping As Network.Ping, route As Network.TraceRoute, location As Geo.GeoLightEntry)
             Me.Session = session
             Me.Target = target
             Me.Ping = ping
@@ -26,6 +26,24 @@ Namespace Engine
                 retval = New Report(session, target, ping, route, location)
             End If
             Return retval
+        End Function
+
+        Public Sub ToBinStream(w As IO.BinaryWriter)
+            Me.Session.ToBinStream(w)
+            w.Write(Me.Target.GetAddressBytes, 0, 4)
+            Me.Ping.ToBinStream(w)
+            Me.Route.ToBinStream(w)
+            Me.Location.ToBinStream(w)
+        End Sub
+
+        Public Shared Function FromBinStream(r As IO.BinaryReader) As Report
+            Return New Report(
+                Session.FromBinStream(r),
+                New IPAddress(r.ReadBytes(4)),
+                Network.Ping.FromBinStream(r),
+                Network.TraceRoute.FromBinStream(r),
+                Geo.GeoLightEntry.FromBinStream(r)
+            )
         End Function
 
     End Class

@@ -33,6 +33,30 @@ Namespace Geo
             )
         End Function
 
+        Public Sub ToBinStream(w As IO.BinaryWriter)
+            With w
+                .Write(Me.Confidence)
+                .Write(Me.ContinentName)
+                .Write(Me.CountryName)
+                .Write(Me.CityName)
+                .Write(Me.Accuracy)
+                .Write(Me.Longitude)
+                .Write(Me.Latitude)
+            End With
+        End Sub
+
+        Public Shared Function FromBinStream(r As IO.BinaryReader) As GeoLightEntry
+            Return New GeoLightEntry(
+                r.ReadString,
+                r.ReadString,
+                r.ReadString,
+                r.ReadDouble,
+                r.ReadInt32,
+                r.ReadDouble,
+                r.ReadDouble
+            )
+        End Function
+
     End Class
 
 End Namespace
