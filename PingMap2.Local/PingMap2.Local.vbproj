@@ -4,31 +4,35 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{19A58768-94E2-4E17-B391-FAE48951C667}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>PingMap2</RootNamespace>
-    <AssemblyName>PingMap2</AssemblyName>
+    <ProjectGuid>{960F53C0-8E48-403F-8F6E-A99255A817F4}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <StartupObject>PingMap2.Local.Module1</StartupObject>
+    <RootNamespace>PingMap2.Local</RootNamespace>
+    <AssemblyName>PingMap2.Local</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <MyType>Windows</MyType>
+    <MyType>Console</MyType>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>PingMap2.xml</DocumentationFile>
+    <DocumentationFile>PingMap2.Local.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>PingMap2.xml</DocumentationFile>
+    <DocumentationFile>PingMap2.Local.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -44,18 +48,9 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MaxMind.Db, Version=2.0.0.0, Culture=neutral, PublicKeyToken=66afa4cc5ae853ac, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaxMind.Db.2.6.1\lib\net45\MaxMind.Db.dll</HintPath>
-    </Reference>
-    <Reference Include="MaxMind.GeoIP2, Version=3.0.0.0, Culture=neutral, PublicKeyToken=66afa4cc5ae853ac, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaxMind.GeoIP2.3.1.0\lib\net45\MaxMind.GeoIP2.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -74,16 +69,8 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Engine\IReportSink.vb" />
-    <Compile Include="Engine\Pool.vb" />
-    <Compile Include="Engine\Report.vb" />
-    <Compile Include="Engine\ReportCallback.vb" />
-    <Compile Include="Engine\Runtime.vb" />
-    <Compile Include="Engine\Session.vb" />
-    <Compile Include="Engine\Worker.vb" />
-    <Compile Include="Extensions.vb" />
-    <Compile Include="Geo\GeoLightDB.vb" />
-    <Compile Include="Geo\GeoLightEntry.vb" />
+    <Compile Include="Logger.vb" />
+    <Compile Include="Module1.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -99,10 +86,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Network\IPRange.vb" />
-    <Compile Include="Network\Ping.vb" />
-    <Compile Include="Network\Address.vb" />
-    <Compile Include="Network\TraceRoute.vb" />
+    <Compile Include="ReportDatabase.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -122,9 +106,13 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <None Include="packages.config" />
-    <None Include="Geo\Resources\GeoIP2-City.mmdb" />
-    <None Include="Geo\Resources\GeoLite2-City.mmdb" />
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PingMap2\PingMap2.vbproj">
+      <Project>{19a58768-94e2-4e17-b391-fae48951c667}</Project>
+      <Name>PingMap2</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
