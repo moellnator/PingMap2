@@ -36,8 +36,8 @@
         End Sub
 
         Public Sub Print()
-            Me._Print(ConsoleColor.White, Me.Timestamp.ToString("MM.dd.yyyy hh:mm:ss").PadRight(17, " "c))
-            Me._Print(_COLORS(Me.Level), _SYMBOLS(Me.Level).PadRight(4, " "c))
+            Me._Print(ConsoleColor.White, Me.Timestamp.GetIsoString & " ")
+            Me._Print(_COLORS(Me.Level), _SYMBOLS(Me.Level) & " ")
             Me._Print(ConsoleColor.Gray, Me.Message & vbNewLine)
         End Sub
 

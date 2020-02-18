@@ -3,6 +3,8 @@
 Namespace Geo
     Public Class GeoLightEntry
 
+        Public Shared ReadOnly Property Empty As New GeoLightEntry("Unknown", "Unknown", "Unknown", 0, 0, Double.NaN, Double.NaN)
+
         Public ReadOnly Property Confidence As Double
         Public ReadOnly Property ContinentName As String
         Public ReadOnly Property CityName As String
@@ -13,9 +15,9 @@ Namespace Geo
 
         Private Sub New(continent As String, country As String, city As String, confidence As Double, accuracy As Integer, longitude As Double, latitude As Double)
             Me.Confidence = confidence
-            Me.ContinentName = continent
-            Me.CountryName = country
-            Me.CityName = city
+            Me.ContinentName = If(continent, String.Empty)
+            Me.CountryName = If(country, String.Empty)
+            Me.CityName = If(city, String.Empty)
             Me.Accuracy = accuracy
             Me.Longitude = longitude
             Me.Latitude = latitude

@@ -11,6 +11,11 @@
 
         Public Property MaxTTL As Integer = 255
         Public Property Timeout As Integer = 1000
+        Public ReadOnly Property MaxThreadCount As Integer
+            Get
+                Return Me._thread_count
+            End Get
+        End Property
 
         Public Sub New(clientName As String, threads As Integer)
             Me._session = Session.CreateNew(clientName)

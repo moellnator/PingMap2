@@ -22,7 +22,7 @@ Namespace Geo
         Private ReadOnly _geo_db_reader As DatabaseReader
 
         Private Sub New()
-            Using m As New IO.MemoryStream(My.Resources.GeoIP2_City)
+            Using m As New IO.MemoryStream(My.Resources.GeoLite2_City)
                 _geo_db_reader = New DatabaseReader(m)
             End Using
         End Sub
@@ -32,7 +32,11 @@ Namespace Geo
         End Sub
 
         Public Function Resolve(address As IPAddress) As GeoLightEntry
-            Return GeoLightEntry.FromMaxMind(Me._geo_db_reader.City(address))
+            Dim retval As GeoLightEntry = GeoLightEntry.Empty
+            Try
+                retval = GeoLightEntry.FromMaxMind(Me._geo_db_reader.City(address))
+            Catch : End Try
+            Return retval
         End Function
 
     End Class

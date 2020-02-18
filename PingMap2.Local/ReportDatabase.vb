@@ -1,10 +1,11 @@
 ﻿Imports PingMap2.Engine
 
-Public Class ReportDatabase : Implements IReportSink
+Public Class ReportDatabase : Implements IReportSink, IDisposable
 
     Private ReadOnly _path As String
     Private _current_file As String
     Private _current_stream As IO.FileStream
+    Private _is_disposed As Boolean
 
     Private Shared ReadOnly _MAGIC As Byte() = Text.Encoding.ASCII.GetBytes("PING")
     Private Shared ReadOnly _VERSION As Byte() = {1, 0}
@@ -43,16 +44,42 @@ Public Class ReportDatabase : Implements IReportSink
 
     Public Sub Register(report As Report) Implements IReportSink.Register
         SyncLock Me._current_stream
-            Using w As New IO.BinaryWriter(Me._current_stream, Text.Encoding.UTF8, True)
-                w.Write(&HFF00)
-                report.ToBinStream(w)
-            End Using
+            Try
+                Using w As New IO.BinaryWriter(Me._current_stream, Text.Encoding.UTF8, True)
+                    w.Write(&HFF00)
+                    report.ToBinStream(w)
+                End Using
+                Logger.Instance.Log(
+                    Logger.LogLevel.Info,
+                    "Report: " & Hex(report.Session.GetHashCode).PadLeft(8, "0"c) & " > " &
+                    report.Ping.Replier.ToString.PadRight(15, " "c) & " > " &
+                    report.Ping.RTT.ToString.PadLeft(4, "0"c) & " > " &
+                    report.Location.CountryName
+                )
+            Catch ex As Exception
+                Logger.Instance.Log(Logger.LogLevel.Critical, "Exception: " & ex.Message & vbNewLine & ex.StackTrace)
+            End Try
             If Me._current_stream.Length >= _MAX_FILE_SIZE Then
                 Logger.Instance.Log(Logger.LogLevel.Info, "Closing data base: " & Me._current_file)
                 Me._current_stream.Close()
+                Me._current_stream.Dispose()
                 Me._MakeNewBinaryFile()
             End If
         End SyncLock
+    End Sub
+
+    Protected Overridable Sub Dispose(disposing As Boolean)
+        If Not Me._is_disposed Then
+            If disposing Then
+                Me._current_stream.Close()
+                Me._current_stream.Dispose()
+            End If
+        End If
+        Me._is_disposed = True
+    End Sub
+
+    Public Sub Dispose() Implements IDisposable.Dispose
+        Dispose(True)
     End Sub
 
 End Class
