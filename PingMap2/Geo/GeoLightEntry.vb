@@ -37,10 +37,10 @@ Namespace Geo
 
         Public Sub ToBinStream(w As IO.BinaryWriter)
             With w
-                .Write(Me.Confidence)
                 .Write(Me.ContinentName)
                 .Write(Me.CountryName)
                 .Write(Me.CityName)
+                .Write(Me.Confidence)
                 .Write(Me.Accuracy)
                 .Write(Me.Longitude)
                 .Write(Me.Latitude)

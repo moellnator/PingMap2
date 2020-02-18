@@ -9,7 +9,7 @@ Public Class ReportDatabase : Implements IReportSink, IDisposable
 
     Private Shared ReadOnly _MAGIC As Byte() = Text.Encoding.ASCII.GetBytes("PING")
     Private Shared ReadOnly _VERSION As Byte() = {1, 0}
-    Private Shared ReadOnly _BUILD As Byte = Reflection.Assembly.GetCallingAssembly.GetName.Version.Build
+    Private Shared ReadOnly _BUILD As Integer = Reflection.Assembly.GetCallingAssembly.GetName.Version.Build
     Private Shared ReadOnly _MAX_FILE_SIZE As Integer = 2 ^ 20
 
     Public Sub New()

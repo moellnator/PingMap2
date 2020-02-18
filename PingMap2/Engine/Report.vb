@@ -37,8 +37,10 @@ Namespace Engine
         End Sub
 
         Public Shared Function FromBinStream(r As IO.BinaryReader) As Report
+            Dim session As Session = Session.FromBinStream(r)
+            session.Dispose()
             Return New Report(
-                Session.FromBinStream(r),
+                session,
                 New IPAddress(r.ReadBytes(4)),
                 Network.Ping.FromBinStream(r),
                 Network.TraceRoute.FromBinStream(r),

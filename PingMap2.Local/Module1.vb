@@ -6,6 +6,7 @@ Module Module1
         Try
             Console.WriteLine("PingMap version 2 build " & Reflection.Assembly.GetCallingAssembly.GetName.Version.Build)
             Console.WriteLine("Local client (c) Marc Oliver Herdrich 2020" & vbNewLine)
+            Console.WriteLine("Press [F4] to exit..." & vbNewLine)
             Logger.Instance.Verbosity = Setup.Instance.LogLevel
             Using r As New Runtime(Setup.Instance.SessionName, Setup.Instance.ThreadCount), db As New ReportDatabase
                 Logger.Instance.Log(Logger.LogLevel.Info, "Starting a new runtime...")
@@ -21,15 +22,15 @@ Module Module1
         Finally
             Logger.Instance.Dispose()
             Console.WriteLine(vbNewLine & "Press [ANY] key to continue...")
-            Console.ReadKey(False)
+            Console.ReadKey(True)
         End Try
     End Sub
 
     Private Sub _LoopUntilExit()
-        Dim command As String
+        Dim command As ConsoleKeyInfo
         Do
-            command = Console.ReadLine
-        Loop Until command = "exit"
+            command = Console.ReadKey(True)
+        Loop Until command.Key = ConsoleKey.F4
     End Sub
 
 End Module
